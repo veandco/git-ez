@@ -1,0 +1,8 @@
+[package]
+name = "git-ez"
+version = "0.0.1"
+authors = ["Lilis Iskandar <lilis@veand.co>"]
+
+[profile.release]
+lto = true
+panic = "abort"
