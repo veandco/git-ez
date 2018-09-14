@@ -1,6 +1,6 @@
 # git-ez
 
-This is a simple Git commit tool that uses Emoji!
+This is a simple Git commit tool that uses Emoji! Currently only supports the Linux platform.
 
 ## Build
 
