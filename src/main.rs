@@ -12,6 +12,9 @@ struct Cat {
     category: &'static str,
     typ: &'static str,
     emoji: &'static str,
+
+    // Some emojis seem to take "zero" space which causes some misalignment
+    // when printing the list. This spacing is to make up for that.
     spacing: &'static str,
 }
 
