@@ -30,8 +30,8 @@ macro_rules! cat {
 fn cats() -> Vec<Cat> {
     let mut cats = Vec::new();
 
-    cats.push(cat!("new", "new", "✨", ""));
-    cats.push(cat!("feature", "feature", "✨", ""));
+    cats.push(cat!("new", "new", "⭐", ""));
+    cats.push(cat!("feature", "feature", "⭐", ""));
     cats.push(cat!("bug", "bug", "🐛", ""));
     cats.push(cat!("bug", "fix", "🐛", ""));
     cats.push(cat!("security", "security", "🔒", ""));
