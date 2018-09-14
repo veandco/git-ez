@@ -124,14 +124,14 @@ fn main() {
     let cat = cat.unwrap();
     let message = if description.is_empty() {
         if scope.is_empty() {
-            format!("\n{} {}: {}", cat.emoji, cat.category, summary)
+            format!("\n{}{} {}: {}", cat.emoji, cat.spacing, cat.category, summary)
         } else {
-            format!("\n{} {}({}): {}", cat.emoji, cat.category, scope, summary)
+            format!("\n{}{} {}({}): {}", cat.emoji, cat.spacing, cat.category, scope, summary)
         }
     } else if scope.is_empty() {
-        format!("\n{} {}: {}\n\n{}", cat.emoji, cat.category, summary, description)
+        format!("\n{}{} {}: {}\n\n{}", cat.emoji, cat.spacing, cat.category, summary, description)
     } else {
-        format!("\n{} {}({}): {}\n\n{}", cat.emoji, cat.category, scope, summary, description)
+        format!("\n{}{} {}({}): {}\n\n{}", cat.emoji, cat.spacing, cat.category, scope, summary, description)
     };
 
     // Add additional command-line arguments that were set by user
