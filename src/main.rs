@@ -12,57 +12,58 @@ struct Cat {
     category: &'static str,
     typ: &'static str,
     emoji: &'static str,
+    spacing: &'static str,
 }
 
 impl fmt::Display for Cat {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:32}{}", self.typ, self.emoji)
+        write!(f, "{}{} {}", self.emoji, self.spacing, self.typ)
     }
 }
 
 macro_rules! cat {
-    ($category:expr, $typ:expr, $emoji:expr) => {
-        Cat{category: $category, typ: $typ, emoji: $emoji}
+    ($category:expr, $typ:expr, $emoji:expr, $spacing:expr) => {
+        Cat{category: $category, typ: $typ, emoji: $emoji, spacing: $spacing}
     };
 }
 
 fn cats() -> Vec<Cat> {
     let mut cats = Vec::new();
 
-    cats.push(cat!("new", "new", "✨"));
-    cats.push(cat!("feature", "feature", "✨"));
-    cats.push(cat!("bug", "bug", "🐛"));
-    cats.push(cat!("bug", "fix", "🐛"));
-    cats.push(cat!("security", "security", "🔒"));
-    cats.push(cat!("performance", "performance", "📈"));
-    cats.push(cat!("improvement", "improvement", "⚡"));
-    cats.push(cat!("breaking", "breaking", "💥"));
-    cats.push(cat!("deprecated", "deprecated", "⚠️"));
-    cats.push(cat!("update", "cosmetics", "💄"));
-    cats.push(cat!("update", "other", "🆙"));
-    cats.push(cat!("update", "i18n", "🌐"));
-    cats.push(cat!("refactor", "refactor", "👕"));
-    cats.push(cat!("docs", "docs", "✏️"));
-    cats.push(cat!("docs", "license", "©️️"));
-    cats.push(cat!("examples", "examples", "🍭"));
-    cats.push(cat!("test", "add-test", "✅"));
-    cats.push(cat!("test", "fix-test", "💚"));
-    cats.push(cat!("dependency", "upgrade-dependencies", "⬆️"));
-    cats.push(cat!("dependency", "downgrade-dependencies", "⬇️"));
-    cats.push(cat!("dependency", "pin-dependencies", "📌"));
-    cats.push(cat!("config", "config", "🔧"));
-    cats.push(cat!("build", "build", "📦"));
-    cats.push(cat!("release", "release-initial", "🐣"));
-    cats.push(cat!("release", "release-major", "🎊"));
-    cats.push(cat!("release", "release-minor", "🎉"));
-    cats.push(cat!("release", "release-patch", "✨"));
-    cats.push(cat!("release", "release-deploy", "🚀"));
-    cats.push(cat!("revert", "revert", "🔙"));
-    cats.push(cat!("wip", "wip", "🚧"));
-    cats.push(cat!("resolve", "resolve", "🔀"));
-    cats.push(cat!("add", "add", "➕"));
-    cats.push(cat!("remove", "remove", "➖"));
-    cats.push(cat!("on", "on", "🔛"));
+    cats.push(cat!("new", "new", "✨", ""));
+    cats.push(cat!("feature", "feature", "✨", ""));
+    cats.push(cat!("bug", "bug", "🐛", ""));
+    cats.push(cat!("bug", "fix", "🐛", ""));
+    cats.push(cat!("security", "security", "🔒", ""));
+    cats.push(cat!("performance", "performance", "📈", ""));
+    cats.push(cat!("improvement", "improvement", "⚡", ""));
+    cats.push(cat!("breaking", "breaking", "💥", ""));
+    cats.push(cat!("deprecated", "deprecated", "⚠️", " "));
+    cats.push(cat!("update", "cosmetics", "💄", ""));
+    cats.push(cat!("update", "other", "🆙", ""));
+    cats.push(cat!("update", "i18n", "🌐", ""));
+    cats.push(cat!("refactor", "refactor", "👕", ""));
+    cats.push(cat!("docs", "docs", "✏️", " "));
+    cats.push(cat!("docs", "license", "©️️", " "));
+    cats.push(cat!("examples", "examples", "🍭", ""));
+    cats.push(cat!("test", "add-test", "✅", ""));
+    cats.push(cat!("test", "fix-test", "💚", ""));
+    cats.push(cat!("dependency", "upgrade-dependencies", "⬆️", " "));
+    cats.push(cat!("dependency", "downgrade-dependencies", "⬇️", " "));
+    cats.push(cat!("dependency", "pin-dependencies", "📌", ""));
+    cats.push(cat!("config", "config", "🔧", ""));
+    cats.push(cat!("build", "build", "📦", ""));
+    cats.push(cat!("release", "release-initial", "🐣", ""));
+    cats.push(cat!("release", "release-major", "🎊", ""));
+    cats.push(cat!("release", "release-minor", "🎉", ""));
+    cats.push(cat!("release", "release-patch", "✨", ""));
+    cats.push(cat!("release", "release-deploy", "🚀", ""));
+    cats.push(cat!("revert", "revert", "🔙", ""));
+    cats.push(cat!("wip", "wip", "🚧", ""));
+    cats.push(cat!("resolve", "resolve", "🔀", ""));
+    cats.push(cat!("add", "add", "➕", ""));
+    cats.push(cat!("remove", "remove", "➖", ""));
+    cats.push(cat!("on", "on", "🔛", ""));
 
     cats
 }
