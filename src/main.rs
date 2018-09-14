@@ -153,3 +153,8 @@ fn main() {
         .spawn()
         .expect("Failed to run git commit command");
 }
+
+#[test]
+fn test_print_cats() {
+    print_cats();
+}
