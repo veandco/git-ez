@@ -90,6 +90,7 @@ fn main() {
     let mut typ = String::new();
     while cat.is_none() {
         // Get type of change from user
+        typ.clear();
         println!("Please enter the type of the change you're committing: ");
         io::stdin().read_line(&mut typ)
             .expect("Failed to read line");
