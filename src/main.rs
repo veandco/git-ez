@@ -1,5 +1,6 @@
 // std
 use std::alloc::System;
+use std::env;
 use std::fmt;
 use std::io;
 use std::process::Command;
@@ -132,8 +133,21 @@ fn main() {
         format!("\n{} {}({}): {}\n\n{}", cat.emoji, cat.category, scope, summary, description)
     };
 
+    // Add additional command-line arguments that were set by user
+    let os_args = env::args();
+    let additional_args: Vec<String> = os_args.map(|arg| arg.to_string().clone()).collect();
+    let mut final_args = Vec::new();
+    final_args.push("commit");
+    for arg in &additional_args[1..] {
+        final_args.push(&arg);
+    }
+
+    // Put the commit message
+    final_args.push("-m");
+    final_args.push(&message);
+
     Command::new("git")
-        .args(&["commit", "-m", &message])
+        .args(&final_args)
         .spawn()
         .expect("Failed to run git commit command");
 }
