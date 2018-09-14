@@ -1,113 +1,101 @@
 // std
 use std::alloc::System;
-use std::collections::HashMap;
+use std::fmt;
 use std::io;
 use std::process::Command;
 
 #[global_allocator]
 static GLOBAL: System = System;
 
-fn emoji_map<'a>() -> HashMap<&'a str, &'a str> {
-    let mut map = HashMap::new();
-
-    map.insert("new", "✨");
-    map.insert("feature", "✨");
-    map.insert("bug", "🐛");
-    map.insert("fix", "🐛");
-    map.insert("security", "🔒");
-    map.insert("performance", "📈");
-    map.insert("improvement", "⚡");
-    map.insert("breaking", "💥");
-    map.insert("deprecated", "⚠️");
-    map.insert("refactor", "👕");
-    map.insert("docs", "✏️");
-    map.insert("examples", "🍭");
-    map.insert("add-test", "✅");
-    map.insert("fix-test", "💚");
-    map.insert("upgrade-dependencies", "⬆️");
-    map.insert("downgrade-dependencies", "⬇️");
-    map.insert("pin-dependencies", "📌");
-    map.insert("config", "🔧");
-    map.insert("build", "📦");
-    map.insert("release-major", "🎊");
-    map.insert("release-minor", "🎉");
-    map.insert("release-patch", "✨");
-    map.insert("release-deploy", "🚀");
-    map.insert("revert", "🔙");
-    map.insert("wip", "🚧");
-    map.insert("add-files", "➕");
-    map.insert("remove-files", "➖");
-    map.insert("on", "🔛");
-
-    map
+struct Cat {
+    category: &'static str,
+    typ: &'static str,
+    emoji: &'static str,
 }
 
-fn category_map<'a>() -> HashMap<&'a str, &'a str> {
-    let mut map = HashMap::new();
-
-    map.insert("new", "new");
-    map.insert("feature", "feature");
-    map.insert("bug", "bug");
-    map.insert("fix", "bug");
-    map.insert("security", "security");
-    map.insert("performance", "performance");
-    map.insert("improvement", "improvement");
-    map.insert("breaking", "breaking");
-    map.insert("deprecated", "deprecated");
-    map.insert("refactor", "refactor");
-    map.insert("docs", "docs");
-    map.insert("examples", "examples");
-    map.insert("add-test", "test");
-    map.insert("fix-test", "test");
-    map.insert("upgrade-dependencies", "dependency");
-    map.insert("downgrade-dependencies", "dependency");
-    map.insert("pin-dependencies", "dependency");
-    map.insert("config", "config");
-    map.insert("build", "build");
-    map.insert("release-major", "release");
-    map.insert("release-minor", "release");
-    map.insert("release-patch", "release");
-    map.insert("release-deploy", "release");
-    map.insert("revert", "revert");
-    map.insert("wip", "wip");
-    map.insert("add-files", "misc");
-    map.insert("remove-files", "misc");
-    map.insert("on", "misc");
-
-    map
+impl fmt::Display for Cat {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:32}{}", self.typ, self.emoji)
+    }
 }
 
-fn print_emojis() {
-    let typs = emoji_map();
+macro_rules! cat {
+    ($category:expr, $typ:expr, $emoji:expr) => {
+        Cat{category: $category, typ: $typ, emoji: $emoji}
+    };
+}
+
+fn cats() -> Vec<Cat> {
+    let mut cats = Vec::new();
+
+    cats.push(cat!("new", "new", "✨"));
+    cats.push(cat!("feature", "feature", "✨"));
+    cats.push(cat!("bug", "bug", "🐛"));
+    cats.push(cat!("bug", "fix", "🐛"));
+    cats.push(cat!("security", "security", "🔒"));
+    cats.push(cat!("performance", "performance", "📈"));
+    cats.push(cat!("improvement", "improvement", "⚡"));
+    cats.push(cat!("breaking", "breaking", "💥"));
+    cats.push(cat!("deprecated", "deprecated", "⚠️"));
+    cats.push(cat!("update", "cosmetics", "💄"));
+    cats.push(cat!("update", "other", "🆙"));
+    cats.push(cat!("update", "i18n", "🌐"));
+    cats.push(cat!("refactor", "refactor", "👕"));
+    cats.push(cat!("docs", "docs", "✏️"));
+    cats.push(cat!("docs", "license", "©️️"));
+    cats.push(cat!("examples", "examples", "🍭"));
+    cats.push(cat!("test", "add-test", "✅"));
+    cats.push(cat!("test", "fix-test", "💚"));
+    cats.push(cat!("dependency", "upgrade-dependencies", "⬆️"));
+    cats.push(cat!("dependency", "downgrade-dependencies", "⬇️"));
+    cats.push(cat!("dependency", "pin-dependencies", "📌"));
+    cats.push(cat!("config", "config", "🔧"));
+    cats.push(cat!("build", "build", "📦"));
+    cats.push(cat!("release", "release-initial", "🐣"));
+    cats.push(cat!("release", "release-major", "🎊"));
+    cats.push(cat!("release", "release-minor", "🎉"));
+    cats.push(cat!("release", "release-patch", "✨"));
+    cats.push(cat!("release", "release-deploy", "🚀"));
+    cats.push(cat!("revert", "revert", "🔙"));
+    cats.push(cat!("wip", "wip", "🚧"));
+    cats.push(cat!("resolve", "resolve", "🔀"));
+    cats.push(cat!("add", "add", "➕"));
+    cats.push(cat!("remove", "remove", "➖"));
+    cats.push(cat!("on", "on", "🔛"));
+
+    cats
+}
+
+fn print_cats() {
+    let cats = cats();
 
     println!("\nTypes");
     println!("=====\n");
-    for (k, v) in typs.iter() {
-        println!("{}\t{}", v, k);
+    for cat in &cats {
+        println!("{}", cat);
     }
     println!();
 }
 
 fn main() {
+    let cats = cats();
+    let mut cat = None;
+
     // Type
-    let emoji_map = emoji_map();
-    let category_map = category_map();
     let mut typ = String::new();
-    let mut emoji = None;
-    let mut category = None;
-    while emoji.is_none() && category.is_none() {
+    while cat.is_none() {
+        // Get type of change from user
         println!("Please enter the type of the change you're committing: ");
         io::stdin().read_line(&mut typ)
             .expect("Failed to read line");
         let typ = typ.trim();
-        emoji = emoji_map.get(typ);
-        if emoji.is_none() {
-            print_emojis();
+
+        // Find cat
+        cat = cats.iter().find(|cat| cat.typ == typ);
+        if cat.is_none() {
+            print_cats();
         }
-        category = category_map.get(typ);
     }
-    let emoji = emoji.unwrap();
-    let category = category.unwrap();
 
     // Scope
     println!("\nScope: ");
@@ -131,18 +119,17 @@ fn main() {
     let description = description.trim();
 
     // Commit message
-    let message = if description.len() > 0 {
-        if scope.len() > 0 {
-            format!("\n{} {}({}): {}\n\n{}", emoji, category, scope, summary, description)
+    let cat = cat.unwrap();
+    let message = if description.is_empty() {
+        if scope.is_empty() {
+            format!("\n{} {}: {}", cat.emoji, cat.category, summary)
         } else {
-            format!("\n{} {}: {}\n\n{}", emoji, category, summary, description)
+            format!("\n{} {}({}): {}", cat.emoji, cat.category, scope, summary)
         }
+    } else if scope.is_empty() {
+        format!("\n{} {}: {}\n\n{}", cat.emoji, cat.category, summary, description)
     } else {
-        if scope.len() > 0 {
-            format!("\n{} {}({}): {}", emoji, category, scope, summary)
-        } else {
-            format!("\n{} {}: {}", emoji, category, summary)
-        }
+        format!("\n{} {}({}): {}\n\n{}", cat.emoji, cat.category, scope, summary, description)
     };
 
     Command::new("git")
