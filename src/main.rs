@@ -147,6 +147,7 @@ fn main() {
     final_args.push("-m");
     final_args.push(&message);
 
+    // Execute git commit command with our arguments
     Command::new("git")
         .args(&final_args)
         .spawn()
