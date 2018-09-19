@@ -1,5 +1,6 @@
 // std
 use std::alloc::System;
+use std::env;
 use std::fs::{self, File};
 use std::fmt;
 use std::io::{self, Read};
@@ -132,22 +133,13 @@ fn config() -> Option<Config> {
 }
 
 fn current_ip_address() -> String {
-    let output = Command::new("who")
-        .args(&["-u"])
-        .output()
-        .expect("Failed to run who -u");
-
-    if !output.status.success() {
-        return String::new();
+    if let Ok(ssh_client) = env::var("SSH_CLIENT") {
+        let fields: Vec<_> = ssh_client.split(' ').collect();
+        if !fields.is_empty() {
+            return fields[0].to_string();
+        }
     }
-
-    String::from_utf8_lossy(&output.stdout)
-        .split(' ')
-        .last()
-        .unwrap()
-        .trim()
-        .replace("(", "")
-        .replace(")", "")
+    String::new()
 }
 
 fn save_config(config: &Config) {
@@ -189,17 +181,30 @@ fn matching_user_from_config<'a>(name: &str, email: &str, config: &'a mut Config
 }
 
 fn add_user(name: &str, email: &str) {
+    let current_ip_address = current_ip_address();
+    if current_ip_address.is_empty() {
+        return;
+    }
+
     let config = config();
     if let Some(mut config) = config {
+        let mut done = false;
         {
             let mut user = matching_user_from_config(name, email, &mut config);
-            let current_ip_address = current_ip_address();
             if let Some(mut user) = user {
                 if user.ip_addresses.contains(&current_ip_address) {
                     return;
                 }
-                user.ip_addresses.push(current_ip_address);
+                user.ip_addresses.push(current_ip_address.clone());
+                done = true;
             }
+        }
+        if !done {
+            config.users.push(User{
+                name: name.to_string(),
+                email: email.to_string(),
+                ip_addresses: vec![current_ip_address],
+            });
         }
         save_config(&config);
     } else {
@@ -207,7 +212,7 @@ fn add_user(name: &str, email: &str) {
         config.users.push(User{
             name: name.to_string(),
             email: email.to_string(),
-            ip_addresses: vec![current_ip_address()],
+            ip_addresses: vec![current_ip_address],
         });
         save_config(&config);
     }
