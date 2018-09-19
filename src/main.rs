@@ -250,6 +250,17 @@ fn clear_users() {
     }
 }
 
+fn list_users() {
+    let config = config();
+    if let Some(config) = config {
+        config.users.iter().for_each(|user| {
+            println!("{} <{}>", user.name, user.email);
+        });
+    } else {
+        println!("No previous configuration found")
+    }
+}
+
 fn commit<'a>(user: &Option<&'a mut User>, git_options: &[&'a str]) {
     let cats = cats();
     let mut cat = None;
@@ -390,7 +401,9 @@ fn main() {
                         .takes_value(true)
                         .help("email of the user")))
                 .subcommand(SubCommand::with_name("clear")
-                    .about("Clear all users")))
+                    .about("Clear all users"))
+                .subcommand(SubCommand::with_name("list")
+                    .about("List all users")))
             .get_matches();
 
     if let Some(matches) = matches.subcommand_matches("user") {
@@ -402,6 +415,8 @@ fn main() {
             return remove_user(matches.value_of("name"), matches.value_of("email"));
         } else if matches.subcommand_matches("clear").is_some() {
             return clear_users();
+        } else if matches.subcommand_matches("list").is_some() {
+            return list_users();
         }
     }
 
