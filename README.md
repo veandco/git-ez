@@ -1,4 +1,4 @@
-# git-ez
+# git-ez [![Build Status](https://travis-ci.com/veandco/git-ez.svg?branch=master)](https://travis-ci.com/veandco/git-ez)
 
 git-ez is a git commit tool that uses emojis! Currently only supports the Linux platform.
 
