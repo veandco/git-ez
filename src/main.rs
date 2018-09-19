@@ -150,7 +150,7 @@ fn save_config(config: &Config) {
     }
 }
 
-fn current_user_from_config<'a>(config: &'a mut Config) -> Option<&'a mut User> {
+fn current_user_from_config(config: &mut Config) -> Option<&mut User> {
     let mut found = None;
     for i in 0..config.users.len() {
         for ip_address in &mut config.users[i].ip_addresses {
@@ -218,17 +218,26 @@ fn add_user(name: &str, email: &str) {
     }
 }
 
-fn remove_user() {
+fn remove_user(name: Option<&str>, email: Option<&str>) {
     let config = config();
     if let Some(mut config) = config {
-        if let Some(mut user) = current_user_from_config(&mut config) {
-            let current_ip_address = current_ip_address();
-            for i in 0..user.ip_addresses.len() {
-                if user.ip_addresses[i] == current_ip_address {
-                    user.ip_addresses.remove(i);
-                }
+        if let Some(name) = name {
+            if let Some(email) = email {
+                config.users = config.users.iter().filter(|user| !(user.name == name && user.email == email)).cloned().collect();
+                println!("Removed user(s) with name = \"{}\" and email = \"{}\"", name, email);
+            } else {
+                config.users = config.users.iter().filter(|user| user.name != name).cloned().collect();
+                println!("Removed user(s) with name = \"{}\"", name);
             }
+        } else if let Some(email) = email {
+            config.users = config.users.iter().filter(|user| user.email != email).cloned().collect();
+            println!("Removed user(s) with email = \"{}\"", email);
+        } else {
+            let current_ip_address = current_ip_address();
+            config.users = config.users.iter().filter(|user| !user.ip_addresses.contains(&current_ip_address)).cloned().collect();
+            println!("Removed user(s) with IP address = \"{}\"", &current_ip_address);
         }
+
         save_config(&config);
     }
 }
@@ -241,7 +250,7 @@ fn clear_users() {
     }
 }
 
-fn commit<'a>(user: Option<&'a mut User>, git_options: &[&'a str]) {
+fn commit<'a>(user: &Option<&'a mut User>, git_options: &[&'a str]) {
     let cats = cats();
     let mut cat = None;
 
@@ -367,7 +376,19 @@ fn main() {
                         .takes_value(true)
                         .help("email of the user")))
                 .subcommand(SubCommand::with_name("remove")
-                    .about("Remove the current user"))
+                    .about("Remove the current user")
+                    .arg(Arg::with_name("name")
+                        .long("name")
+                        .short("n")
+                        .required(false)
+                        .takes_value(true)
+                        .help("name of the user"))
+                    .arg(Arg::with_name("email")
+                        .long("email")
+                        .short("e")
+                        .required(false)
+                        .takes_value(true)
+                        .help("email of the user")))
                 .subcommand(SubCommand::with_name("clear")
                     .about("Clear all users")))
             .get_matches();
@@ -377,8 +398,8 @@ fn main() {
             let name = matches.value_of("name").unwrap();
             let email = matches.value_of("email").unwrap();
             return add_user(name, email);
-        } else if matches.subcommand_matches("remove").is_some() {
-            return remove_user();
+        } else if let Some(matches) = matches.subcommand_matches("remove") {
+            return remove_user(matches.value_of("name"), matches.value_of("email"));
         } else if matches.subcommand_matches("clear").is_some() {
             return clear_users();
         }
@@ -392,9 +413,9 @@ fn main() {
             None => Vec::new(),
         };
     if let Some(mut config) = config {
-        commit(current_user_from_config(&mut config), &git_options);
+        commit(&current_user_from_config(&mut config), &git_options);
     } else {
-        commit(None, &git_options);
+        commit(&None, &git_options);
     }
 }
 
