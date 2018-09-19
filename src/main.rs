@@ -121,7 +121,7 @@ fn config() -> Option<Config> {
         let config_path = format!("{}/{}", home.display(), ".gitez");
         if let Ok(mut file) = File::open(&config_path) {
             let mut contents = String::new();
-            if let Ok(_) = file.read_to_string(&mut contents) {
+            if file.read_to_string(&mut contents).is_ok() {
                 if let Ok(config) = toml::de::from_str(&contents) {
                     return Some(config);
                 }
@@ -236,8 +236,7 @@ fn clear_users() {
     }
 }
 
-fn commit<'a>(user: Option<&'a mut User>, git_options: Vec<&'a str>) {
-
+fn commit<'a>(user: Option<&'a mut User>, git_options: &[&'a str]) {
     let cats = cats();
     let mut cat = None;
 
@@ -296,8 +295,8 @@ fn commit<'a>(user: Option<&'a mut User>, git_options: Vec<&'a str>) {
     // Add additional Git command-line arguments that were set by user
     let mut final_args = Vec::new();
     final_args.push("commit");
-    if git_options.len() > 0 {
-        for arg in &git_options[1..] {
+    if !git_options.is_empty() {
+        for arg in &git_options[0..] {
             final_args.push(&arg);
         }
     }
@@ -327,7 +326,7 @@ fn commit<'a>(user: Option<&'a mut User>, git_options: Vec<&'a str>) {
         .expect("Failed to run git commit command");
 
     // Unset user section
-    if let Some(_) = user {
+    if user.is_some() {
         let args = vec!["config", "--remove-section", "user"];
         Command::new("git")
             .args(&args)
@@ -373,9 +372,9 @@ fn main() {
             let name = matches.value_of("name").unwrap();
             let email = matches.value_of("email").unwrap();
             return add_user(name, email);
-        } else if let Some(_) = matches.subcommand_matches("remove") {
+        } else if matches.subcommand_matches("remove").is_some() {
             return remove_user();
-        } else if let Some(_) = matches.subcommand_matches("clear") {
+        } else if matches.subcommand_matches("clear").is_some() {
             return clear_users();
         }
     }
@@ -388,9 +387,9 @@ fn main() {
             None => Vec::new(),
         };
     if let Some(mut config) = config {
-        commit(current_user_from_config(&mut config), git_options);
+        commit(current_user_from_config(&mut config), &git_options);
     } else {
-        commit(None, git_options);
+        commit(None, &git_options);
     }
 }
 
