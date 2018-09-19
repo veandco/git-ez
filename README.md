@@ -1,6 +1,14 @@
 # git-ez
 
-This is a simple Git commit tool that uses Emoji! Currently only supports the Linux platform.
+git-ez is a git commit tool that uses emojis! Currently only supports the Linux platform.
+
+The conventions and emojis used here are mostly inspired by the beautiful-looking repository [vue-i18n](https://github.com/kazupon/vue-i18n)!
+
+## Features
+
++ Single standalone binary that can be copied around
++ Multi-user commit using a single user account based on SSH IP address
++ Conventional commit style commits with emojis
 
 ## Build
 
