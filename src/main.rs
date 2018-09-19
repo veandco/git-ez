@@ -81,7 +81,7 @@ fn cats() -> Vec<Cat> {
     cats.push(cat!("update", "other", "🆙", ""));
     cats.push(cat!("update", "i18n", "🌐", ""));
     cats.push(cat!("refactor", "refactor", "👕", ""));
-    cats.push(cat!("docs", "docs", "✏️", " "));
+    cats.push(cat!("docs", "docs", "📝️", " "));
     cats.push(cat!("docs", "license", "©️️", " "));
     cats.push(cat!("examples", "examples", "🍭", ""));
     cats.push(cat!("test", "add-test", "✅", ""));
