@@ -6,3 +6,10 @@ authors = ["Lilis Iskandar <lilis@veand.co>"]
 [profile.release]
 lto = true
 panic = "abort"
+
+[dependencies]
+clap = "2"
+dirs = "1"
+serde_derive = "1"
+serde = "1"
+toml = "0.4"
