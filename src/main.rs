@@ -72,7 +72,6 @@ fn cats() -> Vec<Cat> {
     cats.push(cat!("new", "new", "⭐", "", "add **new feature**"));
     cats.push(cat!("feature", "feature", "⭐", "", "add **new feature**"));
     cats.push(cat!("bug", "bug", "🐛", "", "fix **bug** issue"));
-    cats.push(cat!("bug", "fix", "🐛", "", "fix **bug** issue"));
     cats.push(cat!("security", "security", "🔒", "", "fix **security** issue"));
     cats.push(cat!("performance", "performance", "📈", "", "fix **performance** issue"));
     cats.push(cat!("improvement", "improvement", "⚡", "", "update **backwards-compatible** feature"));
