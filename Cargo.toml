@@ -4,6 +4,7 @@ version = "0.0.2"
 authors = ["Lilis Iskandar <lilis@veand.co>"]
 
 [profile.release]
+opt-level = 'z'
 lto = true
 panic = "abort"
 
