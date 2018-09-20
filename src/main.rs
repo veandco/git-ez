@@ -80,7 +80,7 @@ fn cats() -> Vec<Cat> {
     cats.push(cat!("update", "cosmetics", "💄", "", "update **UI/Cosmetic**"));
     cats.push(cat!("update", "other", "🆙", "", "update **other**"));
     cats.push(cat!("update", "i18n", "🌐", "", "update or fix **internationalization**"));
-    cats.push(cat!("refactor", "refactor", "👕", "", "remove **linter**/strict/deprecation warnings or **refactoring** or code"));
+    cats.push(cat!("refactor", "refactor", "👕", "", "remove **linter**/strict/deprecation warnings or **refactoring** or code **layouting**"));
     cats.push(cat!("docs", "docs", "📝️", "", "update **documentation**"));
     cats.push(cat!("docs", "license", "©️️", " ", "decide or change **license**"));
     cats.push(cat!("examples", "examples", "🍭", "", "for **example** codes"));
