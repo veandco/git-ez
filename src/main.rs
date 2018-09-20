@@ -47,6 +47,7 @@ struct Cat {
     category: &'static str,
     typ: &'static str,
     emoji: &'static str,
+    description: &'static str,
 
     // Some emojis seem to take "zero" space which causes some misalignment
     // when printing the list. This spacing is to make up for that.
@@ -55,53 +56,53 @@ struct Cat {
 
 impl fmt::Display for Cat {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}{} {}", self.emoji, self.spacing, self.typ)
+        write!(f, "{}{} {:24} {}", self.emoji, self.spacing, self.typ, self.description)
     }
 }
 
 macro_rules! cat {
-    ($category:expr, $typ:expr, $emoji:expr, $spacing:expr) => {
-        Cat{category: $category, typ: $typ, emoji: $emoji, spacing: $spacing}
+    ($category:expr, $typ:expr, $emoji:expr, $spacing:expr, $description:expr) => {
+        Cat{category: $category, typ: $typ, emoji: $emoji, spacing: $spacing, description: $description}
     };
 }
 
 fn cats() -> Vec<Cat> {
     let mut cats = Vec::new();
 
-    cats.push(cat!("new", "new", "⭐", ""));
-    cats.push(cat!("feature", "feature", "⭐", ""));
-    cats.push(cat!("bug", "bug", "🐛", ""));
-    cats.push(cat!("bug", "fix", "🐛", ""));
-    cats.push(cat!("security", "security", "🔒", ""));
-    cats.push(cat!("performance", "performance", "📈", ""));
-    cats.push(cat!("improvement", "improvement", "⚡", ""));
-    cats.push(cat!("breaking", "breaking", "💥", ""));
-    cats.push(cat!("deprecated", "deprecated", "⚠️", " "));
-    cats.push(cat!("update", "cosmetics", "💄", ""));
-    cats.push(cat!("update", "other", "🆙", ""));
-    cats.push(cat!("update", "i18n", "🌐", ""));
-    cats.push(cat!("refactor", "refactor", "👕", ""));
-    cats.push(cat!("docs", "docs", "📝️", " "));
-    cats.push(cat!("docs", "license", "©️️", " "));
-    cats.push(cat!("examples", "examples", "🍭", ""));
-    cats.push(cat!("test", "add-test", "✅", ""));
-    cats.push(cat!("test", "fix-test", "💚", ""));
-    cats.push(cat!("dependency", "upgrade-dependencies", "⬆️", " "));
-    cats.push(cat!("dependency", "downgrade-dependencies", "⬇️", " "));
-    cats.push(cat!("dependency", "pin-dependencies", "📌", ""));
-    cats.push(cat!("config", "config", "🔧", ""));
-    cats.push(cat!("build", "build", "📦", ""));
-    cats.push(cat!("release", "release-initial", "🐣", ""));
-    cats.push(cat!("release", "release-major", "🎊", ""));
-    cats.push(cat!("release", "release-minor", "🎉", ""));
-    cats.push(cat!("release", "release-patch", "✨", ""));
-    cats.push(cat!("release", "release-deploy", "🚀", ""));
-    cats.push(cat!("revert", "revert", "🔙", ""));
-    cats.push(cat!("wip", "wip", "🚧", ""));
-    cats.push(cat!("resolve", "resolve", "🔀", ""));
-    cats.push(cat!("add", "add", "➕", ""));
-    cats.push(cat!("remove", "remove", "➖", ""));
-    cats.push(cat!("on", "on", "🔛", ""));
+    cats.push(cat!("new", "new", "⭐", "", "add **new feature**"));
+    cats.push(cat!("feature", "feature", "⭐", "", "add **new feature**"));
+    cats.push(cat!("bug", "bug", "🐛", "", "fix **bug** issue"));
+    cats.push(cat!("bug", "fix", "🐛", "", "fix **bug** issue"));
+    cats.push(cat!("security", "security", "🔒", "", "fix **security** issue"));
+    cats.push(cat!("performance", "performance", "📈", "", "fix **performance** issue"));
+    cats.push(cat!("improvement", "improvement", "⚡", "", "update **backwards-compatible** feature"));
+    cats.push(cat!("breaking", "breaking", "💥", "", "update **backwards-incompatible** feature"));
+    cats.push(cat!("deprecated", "deprecated", "⚠️", " ", "**deprecate** feature"));
+    cats.push(cat!("update", "cosmetics", "💄", "", "update **UI/Cosmetic**"));
+    cats.push(cat!("update", "other", "🆙", "", "update **other**"));
+    cats.push(cat!("update", "i18n", "🌐", "", "update or fix **internationalization**"));
+    cats.push(cat!("refactor", "refactor", "👕", "", "remove **linter**/strict/deprecation warnings or **refactoring** or code"));
+    cats.push(cat!("docs", "docs", "📝️", " ", "update **documentation**"));
+    cats.push(cat!("docs", "license", "©️️", " ", "decide or change **license**"));
+    cats.push(cat!("examples", "examples", "🍭", "", "for **example** codes"));
+    cats.push(cat!("test", "add-test", "✅", "", "add **tests**"));
+    cats.push(cat!("test", "fix-test", "💚", "", "fix **tests** failure or **CI** building"));
+    cats.push(cat!("dependency", "upgrade-dependencies", "⬆️", " ", "upgrade **dependencies**"));
+    cats.push(cat!("dependency", "downgrade-dependencies", "⬇️", " ", "downgrade **dependencies**"));
+    cats.push(cat!("dependency", "pin-dependencies", "📌", "", "pin **dependencies**"));
+    cats.push(cat!("config", "config", "🔧", "", "update **configuration**"));
+    cats.push(cat!("build", "build", "📦", "", "**packaging** or **bundling** or **building**"));
+    cats.push(cat!("release", "release-initial", "🐣", "", "**initial** commit"));
+    cats.push(cat!("release", "release-major", "🎊", "", "release **major** version"));
+    cats.push(cat!("release", "release-minor", "🎉", "", "release **minor** version"));
+    cats.push(cat!("release", "release-patch", "✨", "", "release **patch** version"));
+    cats.push(cat!("release", "release-deploy", "🚀", "", "**deploy** to production enviroment"));
+    cats.push(cat!("revert", "revert", "🔙", "", "**revert** commiting"));
+    cats.push(cat!("wip", "wip", "🚧", "", "**WIP** commiting"));
+    cats.push(cat!("resolve", "resolve", "🔀", "", "merge **conflict resolution**"));
+    cats.push(cat!("add", "add", "➕", "", "**add** files, dependencies, ..."));
+    cats.push(cat!("remove", "remove", "➖", "", "**remove** files, dependencies, ..."));
+    cats.push(cat!("on", "on", "🔛", "", "**enable** feature and something ..."));
 
     cats
 }
@@ -109,8 +110,8 @@ fn cats() -> Vec<Cat> {
 fn print_cats() {
     let cats = cats();
 
-    println!("\nTypes");
-    println!("=====\n");
+    println!("Types                       Description");
+    println!("=======================================\n");
     for cat in &cats {
         println!("{}", cat);
     }
