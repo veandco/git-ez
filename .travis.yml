@@ -8,7 +8,7 @@ deploy:
   provider: releases
   api_key:
     secure: h0jMdpYqRJvIEmf6mfqf2o0FN8VtnXAzzIstD1VYgkLpAM5IpLFXIifCM+XGRokvaezw/yWn0onQw8JbSCZAJljKi9vwAHNigvNp2xl+WGxo2m6FaZ0mBuowzSYy6meuNeUWZo2BgHDjDRo13uxmZWxQR9q6+QmsPukf+o7qHvp2xWST/D5+RsnZ6usB7wEu2NnmU0ED1iMnd11nOfAZkl7uz9XcjlafUJYh4hlaowLSpy4+7RhvwIONffuXtKNR32bISbc+OBTx8xrg96KfMjW2ujEEeCZ2z4jcHwB66plnUdt8ZLTJV6bSXHWt82KoMwx3b6UTI0BheHNNP3ZRu3jD3yJrrPrxcZirocQupCVLL6BoKab10D5gPWFk4movc8h13zYgA7M3rpmfigAnSsqAX6qk5kC4r+skVe6XIC9TgK7NxLZZjnDYY6syWqJhtaNdCDso+hEKh5oPMkHavq9WZLRnn7bEqGJX9EuVA7c+vNYknzWg7oFrPEkJ1MAL2wJcsNUg16njELJtT5wN1Ma5IlMo9moB2pbb3go4akrppO6e8AFjOrNPRIauiU5MJQ1hVyxT5NFMSaHgktGS6HuOaUyxZlZKosg5IQWJmRt22cdFZBrzcg5yd8s8fh+xUz7nNc5JCjHfrs7Bc5r2BRfW+0pHZKrULHzhfaQBw8g=
-  file: target/releases/git-ez
+  file: target/release/git-ez
   on:
     repo: veandco/git-ez
     tags: true
