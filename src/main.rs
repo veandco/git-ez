@@ -363,7 +363,7 @@ fn commit<'a>(user: &Option<&'a mut User>, git_options: &[&'a str]) {
 fn main() {
     let matches =
         App::new("git-ez")
-            .version("0.0.2")
+            .version("0.0.3")
             .about("Git commit helper command that includes emoji!")
             .arg(Arg::with_name("git")
                 .long("git")

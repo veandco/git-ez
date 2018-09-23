@@ -1,6 +1,6 @@
 [package]
 name = "git-ez"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Lilis Iskandar <lilis@veand.co>"]
 
 [profile.release]
