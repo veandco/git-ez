@@ -3,8 +3,8 @@ use std::alloc::System;
 use std::env;
 use std::fs::{self, File};
 use std::fmt;
-use std::io::{self, Read};
-use std::process::Command;
+use std::io::{self, Read, Write};
+use std::process::{Command, Output};
 
 // clap
 extern crate clap;
@@ -319,6 +319,8 @@ fn commit<'a>(user: &Option<&'a mut User>, git_options: &[&'a str]) {
 
     // Add additional Git command-line arguments that were set by user
     let mut final_args = Vec::new();
+    final_args.push("-c");
+    final_args.push("color.status=always");
     final_args.push("commit");
     if !git_options.is_empty() {
         for arg in &git_options[0..] {
@@ -333,31 +335,41 @@ fn commit<'a>(user: &Option<&'a mut User>, git_options: &[&'a str]) {
     // Set user name and email
     if let Some(ref user) = user {
         let args = vec!["config", "user.name", &user.name];
-        Command::new("git")
+        let output = Command::new("git")
             .args(&args)
             .output()
             .expect("Failed to run git config user.name command");
+        print_command_output(output);
+
         let args = vec!["config", "user.email", &user.email];
-        Command::new("git")
+        let output = Command::new("git")
             .args(&args)
             .output()
             .expect("Failed to run git config user.email command");
+        print_command_output(output);
     }
 
     // Execute git commit command with our arguments
-    Command::new("git")
+    let output = Command::new("git")
         .args(&final_args)
         .output()
         .expect("Failed to run git commit command");
+    print_command_output(output);
 
     // Unset user section
     if user.is_some() {
         let args = vec!["config", "--remove-section", "user"];
-        Command::new("git")
+        let output = Command::new("git")
             .args(&args)
             .output()
             .expect("Failed to run git config --remove-section user command");
+        print_command_output(output);
     }
+}
+
+fn print_command_output(output: Output) {
+    io::stdout().write(&output.stdout).unwrap();
+    io::stderr().write(&output.stderr).unwrap();
 }
 
 fn main() {
